@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -10,7 +12,22 @@
 </head>
 <body>
     <header>
-        <h1>Home Page</h1>
+        @if(User.Identity.IsAuthenticated)
+        {
+            <span>Hello, @User.Identity.Name</span>
+            <form asp-action="Logout" asp-controller="User" method="post">
+                <button type="submit" class="btn btn-danger">Exit</button>
+            </form>
+        }
+        else
+        {
+            <div>
+                <a href="/" class="btn btn-primary">Home</a>
+                <a href="user/create" class="btn btn-primary">Register</a>
+                <a href="User/Login" class="btn btn-primary">Auth</a>
+                <a href="User/CreateRole" class="btn btn-primary">Create Role</a>
+            </div>
+        }
     </header>
     <div class="container">
         <main role="main" class="pb-3">
