@@ -12,6 +12,14 @@
 </head>
 <body>
     <header>
+        <ul class="list-group">
+            <li class="list-group-item active" aria-current="true">
+                <a asp-controller="Products" asp-action="Index" class="btn btn-dark">Read Products</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Products" asp-action="Details" class="btn btn-primary">Details Products</a>
+            </li>
+        </ul>
         @if(User.Identity.IsAuthenticated)
         {
             <span>Hello, @User.Identity.Name</span>
@@ -27,6 +35,20 @@
                 <a asp-controller="User" asp-action="Login" class="btn btn-primary">Auth</a>
                 <a asp-controller="User" asp-action="CreateRole" class="btn btn-primary">Create Role</a>
             </div>
+        }
+        @if(User.IsInRole("admin"))
+        {
+        <ul class="list-group">
+            <li class="list-group-item">
+                <a asp-controller="Products" asp-action="Create" class="btn btn-success">Create Product</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Products" asp-action="Update" class="btn btn-warning">Update Product</a>
+            </li>
+            <li class="list-group-item">
+                <a asp-controller="Products" asp-action="Delete" class="btn btn-danger">Delete Product</a>
+            </li>
+        </ul>
         }
     </header>
     <div class="container">

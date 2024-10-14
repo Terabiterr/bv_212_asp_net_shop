@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Shop_app.Models;
 
 namespace Shop_app.Controllers
@@ -15,13 +16,35 @@ namespace Shop_app.Controllers
         {
             return View();
         }
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public ViewResult Create() => View();
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Price,Description")] Product product)
         {
             return RedirectToAction(nameof(Index));    
+        }
+        [Authorize(Roles = "admin")]
+        [HttpGet]
+        public ViewResult Update() => View();
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(int id, [Bind("Id,Name,Price,Description")] Product product)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        [Authorize(Roles = "admin")]
+        [HttpGet]
+        public ViewResult Delete() => View();
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            return RedirectToAction(nameof(Index));
         }
     }
 }
