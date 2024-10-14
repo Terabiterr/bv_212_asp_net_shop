@@ -27,8 +27,9 @@ namespace Shop_app
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 4;
                 options.Password.RequiredUniqueChars = 0;
-            }).AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<UserContext>();
+            })
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<UserContext>();
             
 
             builder.Services.AddControllersWithViews();
@@ -47,11 +48,12 @@ namespace Shop_app
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            
             app.UseRouting();
+            app.UseHttpsRedirection();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseStaticFiles();
             app.MapStaticAssets();

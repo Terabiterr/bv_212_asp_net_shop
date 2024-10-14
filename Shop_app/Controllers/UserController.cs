@@ -24,7 +24,7 @@ namespace Shop_app.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> CreateRole(string roleName, object error)
+        public async Task<IActionResult> CreateRole(string roleName)
         {
             if (string.IsNullOrEmpty(roleName))
             {
@@ -48,9 +48,38 @@ namespace Shop_app.Controllers
             return BadRequest("Role create error ...");
         }
         [HttpGet]
+        public IActionResult AssignRole()
+        {
+            return View();
+        }
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AssignRole(string id, string roleName)
+        {
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(roleName))
+            {
+                return BadRequest("Id or Name Role are important ...");
+            }
+            var user = await _userManager.FindByIdAsync(id);
+            if(user == null)
+            {
+                return NotFound("The user not found ...");
+            }
+            var roleExists = await _roleManager.RoleExistsAsync(roleName);
+            if (!roleExists)
+            {
+                return NotFound($"The role {roleName} not found ...");
+            }
+            var result = await _userManager.AddToRoleAsync(user, roleName);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return BadRequest(Json(result.Errors));
         }
         // POST-метод для создания нового пользователя
         [HttpPost]
