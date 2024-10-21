@@ -1,6 +1,38 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Shop_app.Models.Product>
 @{
     ViewData["Title"] = "Read Page";
     Layout = "_Layout";
 }
 <h3>Read Page</h3>
+<hr />
+<p>
+    <a href="@Url.Action("Create")" class="btn btn-outline-success" >Create a new product</a>
+</p>
+<table class="table table-primary">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Description</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Name</td>
+                <td>@product.Price</td>
+                <td>@product.Description</td>
+                <td>
+                    <a href="@Url.Action("Update", new { Id = product.Id })" class="btn btn-warning">Update</a>
+                    <a href="@Url.Action("Details", new { Id = product.Id })" class="btn btn-info">Details</a>
+                    <a href="@Url.Action("Delete", new { Id = product.Id })" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
