@@ -1,7 +1,27 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Shop_app.Models.Product
 @{
-    ViewData["Title"] = "Details Page";
     Layout = "_Layout";
+    ViewData["Title"] = "Details Page";
 }
 <h3>Details Page</h3>
 <hr />
+
+<table class="table table-primary">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.Id</td>
+            <td>@Model.Name</td>
+            <td>@Model.Price</td>
+            <td>@Model.Description</td>
+        </tr>
+    </tbody>
+</table>

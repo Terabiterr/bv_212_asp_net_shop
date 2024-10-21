@@ -16,9 +16,6 @@
             <li class="list-group-item active" aria-current="true">
                 <a asp-controller="Products" asp-action="Index" class="btn btn-dark">Read Products</a>
             </li>
-            <li class="list-group-item">
-                <a asp-controller="Products" asp-action="Details" class="btn btn-primary">Details Products</a>
-            </li>
         </ul>
         @if(User.Identity.IsAuthenticated)
         {
