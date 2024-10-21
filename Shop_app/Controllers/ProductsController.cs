@@ -1,11 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop_app.Models;
+using Shop_app.Services;
 
 namespace Shop_app.Controllers
 {
     public class ProductsController : Controller
     {
+        private readonly IServiceProduct _serviceProduct;
+        public ProductsController(IServiceProduct serviceProduct)
+        {
+            _serviceProduct = serviceProduct;
+        }
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {

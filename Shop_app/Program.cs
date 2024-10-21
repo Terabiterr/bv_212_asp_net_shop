@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Shop_app.Services;
 
 namespace Shop_app
 {
@@ -8,6 +9,15 @@ namespace Shop_app
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddScoped<IServiceProduct, ServiceProduct>();
+
+            builder.Services.AddDbContext<ProductContext>(options =>
+            {
+                options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("DefaultConnection")
+                    );
+            });
 
             builder.Services.AddDbContext<UserContext>(options =>
             {
