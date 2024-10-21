@@ -1,6 +1,17 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Shop_app.Models.Product
 @{
     ViewData["Title"] = "Delete Page";
     Layout = "_Layout";
 }
 <h3>Delete Page</h3>
+<hr />
+<form class="d-flex justify-content-center align-items-center flex-column w-100" asp-controller="Products" asp-action="Delete" method="post">
+    <div class="form-group w-50">
+        <label class="form-label m-1 p-1" asp-for="Id">Id:</label>
+        <input class="form-control" type="number" asp-for="Id" name="Id" />
+        <span asp-validation-for="Id"></span>
+    </div>
+    <input class="btn btn-danger m-3 w-25" type="submit" value="Delete" />
+    <a asp-action="Index">Back to List</a>
+</form>
