@@ -9,30 +9,26 @@
 
 <h4>Product</h4>
 <hr />
-<div>
-    <div>
-        <form class="d-flex justify-content-center align-items-center flex-column w-100" asp-controller="Products" asp-action="Create" method="post">
+<form class="d-flex justify-content-center align-items-center flex-column w-100" asp-controller="Products" asp-action="Create" method="post">
 
-            <div class="form-group w-50">
-                <label class="form-label m-1 p-1" asp-for="Name">Name:</label>
-                <input class="form-control" asp-for="Name" name="Name" type="text" />
-                <span asp-validation-for="Name"></span>
-            </div>
-
-            <div class="form-group w-50">
-                <label class="form-label m-1 p-1" asp-for="Price">Price:</label>
-                <input class="form-control" asp-for="Price" name="Price" type="text" step="0.01" />
-                <span asp-validation-for="Price"></span>
-            </div>
-
-            <div class="form-group w-50">
-                <label class="form-label m-1 p-1" asp-for="Description">Description:</label>
-                <input class="form-control" asp-for="Description" name="Description" type="text" />
-                <span asp-validation-for="Description"></span>
-            </div>
-
-            <input class="btn btn-success m-3 w-25" type="submit" value="Create" />
-            <a asp-action="Index">Back to List</a>
-        </form>
+    <div class="form-group w-50">
+        <label class="form-label m-1 p-1" asp-for="Name">Name:</label>
+        <input class="form-control" asp-for="Name" name="Name" type="text" />
+        <span asp-validation-for="Name"></span>
     </div>
-</div>
+
+    <div class="form-group w-50">
+        <label class="form-label m-1 p-1" asp-for="Price">Price:</label>
+        <input class="form-control" asp-for="Price" name="Price" type="text" step="0.01" />
+        <span asp-validation-for="Price"></span>
+    </div>
+
+    <div class="form-group w-50">
+        <label class="form-label m-1 p-1" asp-for="Description">Description:</label>
+        <input class="form-control" asp-for="Description" name="Description" type="text" />
+        <span asp-validation-for="Description"></span>
+    </div>
+
+    <input class="btn btn-success m-3 w-25" type="submit" value="Create" />
+    <a asp-action="Index">Back to List</a>
+</form>
