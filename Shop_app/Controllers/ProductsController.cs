@@ -16,12 +16,14 @@ namespace Shop_app.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return View();
+            var products = await _serviceProduct.ReadAsync();
+            return View(products);
         }
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            return View();
+            var product = await _serviceProduct.GetByIdAsync(id);
+            return View(product);
         }
         [Authorize(Roles = "admin")]
         [HttpGet]
