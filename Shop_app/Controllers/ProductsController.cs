@@ -33,7 +33,12 @@ namespace Shop_app.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Price,Description")] Product product)
         {
-            return RedirectToAction(nameof(Index));    
+            if(ModelState.IsValid)
+            {
+                _ = await _serviceProduct.CreateAsync(product);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(product);
         }
         [Authorize(Roles = "admin")]
         [HttpGet]
@@ -43,7 +48,12 @@ namespace Shop_app.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(int id, [Bind("Id,Name,Price,Description")] Product product)
         {
-            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                _ = await _serviceProduct.UpdateAsync(id, product);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(product);
         }
         [Authorize(Roles = "admin")]
         [HttpGet]
@@ -53,7 +63,12 @@ namespace Shop_app.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            return RedirectToAction(nameof(Index));
+            var result = await _serviceProduct.DeleteAsync(id);
+            if(result)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return View();
         }
     }
 }

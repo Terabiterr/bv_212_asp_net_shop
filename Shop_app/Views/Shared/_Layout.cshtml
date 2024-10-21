@@ -30,7 +30,6 @@
                 <a href="/" class="btn btn-primary">Home</a>
                 <a asp-controller="User" asp-action="Create" class="btn btn-primary">Register</a>
                 <a asp-controller="User" asp-action="Login" class="btn btn-primary">Auth</a>
-                <a asp-controller="User" asp-action="CreateRole" class="btn btn-primary">Create Role</a>
             </div>
         }
         @if(User.IsInRole("admin"))
