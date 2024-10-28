@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Shop_app.Services;
@@ -28,7 +29,7 @@ namespace Shop_app
 
             builder.Services.AddSession();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedEmail = true;
                 options.Password.RequireNonAlphanumeric = false;
@@ -38,9 +39,15 @@ namespace Shop_app
                 options.Password.RequiredLength = 4;
                 options.Password.RequiredUniqueChars = 0;
             })
-                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<UserContext>();
-            
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                options.SlidingExpiration = true;
+                options.AccessDeniedPath = "/api/APIUser/AccessDenied";
+            });
 
             builder.Services.AddControllersWithViews();
 
@@ -72,6 +79,7 @@ namespace Shop_app
                 pattern: "{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
 
+            app.MapControllers(); //API routing
             app.Run();
         }
     }
