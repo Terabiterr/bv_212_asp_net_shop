@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Shop_app.Models;
 
 namespace Shop_app.Controllers.API
 {
@@ -22,26 +23,22 @@ namespace Shop_app.Controllers.API
             _roleManager = roleManager;
         }
         [HttpPost("register")]
-        public async Task<IActionResult> Register(string email, string password)
+        public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
-            Console.WriteLine("I'm here!!!");
-            // Перевіряємо, що email та пароль були передані
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            if (!ModelState.IsValid)
             {
-                // Если email или пароль отсутствуют, возвращаем ошибку
-                return BadRequest("Email и пароль обязательны.");
+                return BadRequest("Invalid model ...");
             }
-
             // Создаем нового пользователя IdentityUser с указанным email
             var user = new IdentityUser
             {
-                UserName = email,
-                Email = email,
+                UserName = model.Email,
+                Email = model.Email,
                 EmailConfirmed = true
             };
 
             // Используем UserManager для создания пользователя с переданным паролем
-            var result = await _userManager.CreateAsync(user, password);
+            var result = await _userManager.CreateAsync(user, model.Password);
 
             // Если создание прошло успешно
             if (result.Succeeded)
@@ -54,13 +51,12 @@ namespace Shop_app.Controllers.API
             return BadRequest(result.Errors);
         }
         [HttpPost("auth")]
-        public async Task<IActionResult> Auth(string email, string password)
+        public async Task<IActionResult> Auth([FromBody] LoginModel model)
         {
-            // Проверяем, что email и пароль были переданы
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+
+            if (!ModelState.IsValid)
             {
-                // Если email или пароль отсутствуют, возвращаем ошибку
-                return BadRequest("Email и пароль обязательны.");
+                return BadRequest("Invalid model ...");
             }
             /*
              isPersistent
@@ -72,8 +68,8 @@ namespace Shop_app.Controllers.API
             Флаг, указывающий, должна ли учетная запись пользователя быть заблокирована в случае сбоя входа.
              */
             var result = await _signInManager.PasswordSignInAsync(
-                email,
-                password,
+                model.Email,
+                model.Password,
                 isPersistent: false,
                 lockoutOnFailure: false
                 );

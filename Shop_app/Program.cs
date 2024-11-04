@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Shop_app.Services;
 
 namespace Shop_app
@@ -39,14 +41,28 @@ namespace Shop_app
                 options.Password.RequiredLength = 4;
                 options.Password.RequiredUniqueChars = 0;
             })
-                .AddEntityFrameworkStores<UserContext>();
+                .AddEntityFrameworkStores<UserContext>()
+                .AddDefaultTokenProviders();
 
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
             .AddCookie(options =>
             {
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                 options.SlidingExpiration = true;
                 options.AccessDeniedPath = "/api/APIUser/AccessDenied";
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+
+                };
             });
 
             builder.Services.AddControllersWithViews();
