@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Shop_app.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Shop_app.Controllers.API
 {
@@ -13,14 +17,17 @@ namespace Shop_app.Controllers.API
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IConfiguration _config;
         public APIUserController(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _config = config;
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
@@ -67,21 +74,44 @@ namespace Shop_app.Controllers.API
             Boolean
             Флаг, указывающий, должна ли учетная запись пользователя быть заблокирована в случае сбоя входа.
              */
-            var result = await _signInManager.PasswordSignInAsync(
-                model.Email,
-                model.Password,
-                isPersistent: false,
-                lockoutOnFailure: false
-                );
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return BadRequest("Invalid email ...");
+            }
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+
             if (result.Succeeded)
             {
-                return Ok("Authed successfully ...");
+                var token = GenerateJwtToken(user);
+                return Ok(new { Token = token });
             }
             return BadRequest("Invalid email or password...");
         }
         public async Task<IActionResult> AccessDenied()
         {
             return BadRequest("Cookie: Access Denied ...");
+        }
+        private string GenerateJwtToken(IdentityUser user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(_config["Jwt:Key"]);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Email, user.Email)
+                }),
+                Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_config["Jwt:DurationInMinutes"])),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256),
+                Issuer = _config["Jwt:Issuer"],
+                Audience = _config["Jwt:Audience"]
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }
