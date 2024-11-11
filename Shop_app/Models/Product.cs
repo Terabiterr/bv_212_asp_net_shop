@@ -7,17 +7,19 @@ namespace Shop_app.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required(ErrorMessage = "Id is required")]
         public int Id { get; set; } = 0;
 
-        [Required]
-        [StringLength(100)]
+        [Required(ErrorMessage ="Name is required")]
+        [StringLength(20, MinimumLength = 2, ErrorMessage = "Name is required ... min: 2, max: 20")]
         public string Name { get; set; } = string.Empty;
 
-        [Required]
-        [Column(TypeName = "decimal(18,2)")]
+        [Required(ErrorMessage = "Price is required ...")]
+        [Range(0.01, 100000.00, ErrorMessage = "min: 0.01, max: 100000.00")]
         public decimal Price { get; set; } = decimal.Zero;
+        [Required(ErrorMessage = "Description is required ...")]
 
-        [StringLength(1024)]
+        [StringLength(1024, MinimumLength = 2, ErrorMessage = "min: 2, max: 1024")]
         public string Description { get; set; } = string.Empty;
     }
 }
