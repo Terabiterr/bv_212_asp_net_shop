@@ -21,5 +21,6 @@ namespace Shop_app.Models
 
         [StringLength(1024, MinimumLength = 2, ErrorMessage = "min: 2, max: 1024")]
         public string Description { get; set; } = string.Empty;
+        public ICollection<OrderProducts> OrderProducts { get; set; }
     }
 }
