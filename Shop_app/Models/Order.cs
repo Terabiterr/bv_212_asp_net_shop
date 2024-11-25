@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Shop_app.Models
 {
@@ -16,6 +17,7 @@ namespace Shop_app.Models
         public int CustomerId { get; set; }
         //Navigation property
         public Customer? Customer { get; set; }
+        [JsonIgnore] //To eliminate the serialization error of nested objects
         //Navigation property
         public ICollection<OrderProduct>? OrderProducts { get; set; }
     }
