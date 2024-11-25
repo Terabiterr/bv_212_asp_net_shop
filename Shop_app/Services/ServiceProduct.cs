@@ -13,10 +13,10 @@ namespace Shop_app.Services
     }
     public class ServiceProduct : IServiceProduct
     {
-        private readonly ProductContext _productContext;
+        private readonly ShopContext _productContext;
         private readonly ILogger<ServiceProduct> _logger;
         public ServiceProduct(
-            ProductContext context,
+            ShopContext context,
             ILogger<ServiceProduct> logger
             )
         {

@@ -16,7 +16,7 @@ namespace Shop_app
 
             builder.Services.AddScoped<IServiceProduct, ServiceProduct>();
 
-            builder.Services.AddDbContext<ProductContext>(options =>
+            builder.Services.AddDbContext<ShopContext>(options =>
             {
                 options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection")

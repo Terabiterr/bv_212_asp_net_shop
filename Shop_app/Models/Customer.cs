@@ -13,6 +13,7 @@ namespace Shop_app.Models
         [Required(ErrorMessage = "Name is required")]
         [StringLength(20, MinimumLength = 2, ErrorMessage = "Name is required ... min: 2, max: 20")]
         public string Name { get; set; } = string.Empty;
-        public ICollection<Order> Orders { get; set; }
+        //Navigation property
+        public ICollection<Order>? Orders { get; set; }
     }
 }
