@@ -22,7 +22,7 @@ namespace Shop_app.Models
 
         [StringLength(1024, MinimumLength = 2, ErrorMessage = "min: 2, max: 1024")]
         public string Description { get; set; } = string.Empty;
-        [JsonIgnore] //To eliminate the serialization error of nested objects
+        [JsonIgnore] //Ignor for error serialization
         //Navigation property
         public ICollection<OrderProduct>? OrderProducts { get; set; }
     }

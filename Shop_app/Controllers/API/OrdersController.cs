@@ -17,11 +17,11 @@ namespace Shop_app.Controllers.API
         public async Task<IActionResult> GetOrders()
         {
             var orders = await _shopContext.Orders
-                                .Include(o => o.Customer)
-                                .Include(o => o.OrderProducts)
-                                .ThenInclude(op => op.Product)
-                                .ToListAsync();
-            if(orders != null)
+                .Include(o => o.Customer)
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                .ToListAsync();
+            if (orders != null)
                 return Ok(orders);
             else 
                 return BadRequest("Not exists orders ...");

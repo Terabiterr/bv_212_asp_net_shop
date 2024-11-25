@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Shop_app.Services;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Shop_app
 {

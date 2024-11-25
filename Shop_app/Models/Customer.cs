@@ -16,7 +16,7 @@ namespace Shop_app.Models
         [Required(ErrorMessage = "Name is required")]
         [StringLength(20, MinimumLength = 2, ErrorMessage = "Name is required ... min: 2, max: 20")]
         public string Name { get; set; } = string.Empty;
-        [JsonIgnore] //To eliminate the serialization error of nested objects
+        [JsonIgnore] //Ignor for error serialization
         //Navigation property
         public ICollection<Order>? Orders { get; set; }
     }
